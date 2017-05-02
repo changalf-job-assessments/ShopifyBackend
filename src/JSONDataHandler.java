@@ -10,17 +10,15 @@ import org.json.JSONObject;
  */
 public class JSONDataHandler {
 
-    private InputStream inputStream;
-
-    public void getInputStream(String url) {
+    public InputStream getInputStream(String url) {
         try {
-            inputStream = new URL(url).openStream();
+            return new URL(url).openStream();
         } catch (IOException e) {
             e.printStackTrace();
         }
     }
 
-    public InputStreamReader getInputStreamReader() {
+    public InputStreamReader getInputStreamReader(InputStream inputStream) {
         return new InputStreamReader(inputStream);
     }
 
@@ -39,14 +37,18 @@ public class JSONDataHandler {
         return stringBuilder.toString();
     }
 
-    public JSONObject getJSONData() {
+    public JSONObject getJSONData(InputStreamReader inputStreamReader) {
+        JSONObject jsonObject = null;
+
         try {
-            BufferedReader bufferedReader = new BufferedReader(getInputStreamReader());
+            BufferedReader bufferedReader = new BufferedReader(inputStreamReader);
             String jsonData = readJSON(bufferedReader);
-            JSONObject jsonObject = new JSONObject(jsonData);
-            return jsonObject;
+            jsonObject = new JSONObject(jsonData);
         } catch (Exception e) {
             e.printStackTrace();
         }
+
+        assert(jsonObject == null);
+        return jsonObject;
     }
 }
