@@ -3,6 +3,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.net.URL;
+import java.nio.charset.Charset;
 
 import org.json.JSONObject;
 /**
@@ -24,36 +25,35 @@ public class JSONDataHandler {
     }
 
     public InputStreamReader getInputStreamReader(InputStream inputStream) {
-        return new InputStreamReader(inputStream);
+        return new InputStreamReader(inputStream, Charset.forName("UTF-8"));
     }
 
     public String readJSON(BufferedReader bufferedReader) {
-        StringBuilder stringBuilder = new StringBuilder();
+        StringBuffer stringBuffer = new StringBuffer();
         int charIndex;
+        char[] chars = new char[1024];
 
         try {
-            while ((charIndex = bufferedReader.read()) != -1) {
-                stringBuilder.append(charIndex);
+            while ((charIndex = bufferedReader.read(chars)) != -1) {
+                stringBuffer.append(chars, 0, charIndex);
             }
         } catch (IOException e) {
             e.printStackTrace();
         }
 
-        return stringBuilder.toString();
+        return stringBuffer.toString();
     }
 
-    public JSONObject getJSONData(InputStreamReader inputStreamReader) {
-        JSONObject jsonObject = null;
+    public String getJSONData(String uri) {
+        String jsonData = "";
 
         try {
-            BufferedReader bufferedReader = new BufferedReader(inputStreamReader);
-            String jsonData = readJSON(bufferedReader);
-            jsonObject = new JSONObject(jsonData);
+            BufferedReader bufferedReader = new BufferedReader(getInputStreamReader(getInputStream(uri)));
+            jsonData = readJSON(bufferedReader);
         } catch (Exception e) {
             e.printStackTrace();
         }
 
-        assert(jsonObject == null);
-        return jsonObject;
+        return jsonData;
     }
 }
