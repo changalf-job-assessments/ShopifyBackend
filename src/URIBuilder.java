@@ -16,6 +16,7 @@ public class URIBuilder {
     }
 
     public String buildUri() {
+        System.out.println(absolutePath + relativePath + query);
         return absolutePath + relativePath + query;
     }
 }
