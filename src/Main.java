@@ -46,4 +46,8 @@ public class Main {
     public static boolean sortOrders(JSONObject jsonObject) {
         return false;
     }
+
+    public static JSONObject createJSONOutput(JSONObject jsonObject) {
+        return null;
+    }
 }
