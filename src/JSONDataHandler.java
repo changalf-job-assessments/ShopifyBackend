@@ -43,6 +43,8 @@ public class JSONDataHandler {
         try {
             BufferedReader bufferedReader = new BufferedReader(getInputStreamReader());
             String jsonData = readJSON(bufferedReader);
+            JSONObject jsonObject = new JSONObject(jsonData);
+            return jsonObject;
         } catch (Exception e) {
             e.printStackTrace();
         }
