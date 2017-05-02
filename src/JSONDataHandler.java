@@ -10,11 +10,11 @@ import org.json.JSONObject;
  */
 public class JSONDataHandler {
 
-    public InputStream getInputStream(String url) {
+    public InputStream getInputStream(String uri) {
         InputStream inputStream = null;
 
         try {
-            inputStream = new URL(url).openStream();
+            inputStream = new URL(uri).openStream();
         } catch (IOException e) {
             e.printStackTrace();
         }

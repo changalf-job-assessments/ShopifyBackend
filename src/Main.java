@@ -1,3 +1,5 @@
+import java.io.InputStream;
+
 /**
  * Created by alfredchang on 2017-05-01.
  */
@@ -18,6 +20,8 @@ public class Main {
             uriBuilder = new URIBuilder(absolutePath, relativePath, query + String.valueOf(i));
             uri = uriBuilder.buildUri();
             System.out.println(uri);
+
+            InputStream inputStream = jsonDataHandler.getInputStream(uri);
         }
     }
 }
