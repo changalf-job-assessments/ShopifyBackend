@@ -89,14 +89,18 @@ public class Main {
                 }
             }
 
-            infoOfUnfulfilledOrders.put("remaining_cookies", availableCookies);
-            infoOfUnfulfilledOrders.put("unfulfilled_orders", ids);
-
-            System.out.println(infoOfUnfulfilledOrders);
-
+            displayFinalResults(infoOfUnfulfilledOrders, availableCookies, ids);
         } catch (JSONException e) {
             e.printStackTrace();
         }
+    }
+
+    public static void displayFinalResults(JSONObject infoOfUnfulfilledOrders, int availableCookies,
+                                           List<Integer> ids) throws JSONException {
+        infoOfUnfulfilledOrders.put("remaining_cookies", availableCookies);
+        infoOfUnfulfilledOrders.put("unfulfilled_orders", ids);
+
+        System.out.println(infoOfUnfulfilledOrders);
     }
 
     public static JSONArray getProductsFromJSONObject(JSONObject jsonObject) {
