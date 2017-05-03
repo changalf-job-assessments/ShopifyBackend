@@ -43,6 +43,8 @@ public class Main {
 
     public static void getRelevantInfoFromJSONObject(JSONObject jsonObject) {
         try {
+            JSONObject relevantOrders = new JSONObject();
+            JSONArray arrayOfItems = new JSONArray();
             JSONArray customerOrders = jsonObject.getJSONArray("orders");
 
             for (int i = 0; i < customerOrders.length(); i++) {
@@ -55,13 +57,14 @@ public class Main {
 
                     if (nameOfItem.equals("Cookie")) {
                         jsonObject = removeItem(individualOrder.getInt("id"), j, productInfo);
-                        System.out.println(jsonObject);
+                        arrayOfItems.put(jsonObject);
+                        System.out.println(arrayOfItems);
                     }
                 }
-
+                relevantOrders.put("orders", arrayOfItems);
             }
 
-
+            System.out.println(relevantOrders);
         } catch (JSONException e) {
             e.printStackTrace();
         }
