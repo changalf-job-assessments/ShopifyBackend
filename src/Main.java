@@ -16,12 +16,15 @@ public class Main {
     private static final String relativePath = "/orders.json";
     private static final String query = "?page=";
 
+    private static JSONObject encapsulateObject = new JSONObject();
+    private static JSONArray arrayWithRelevantInfo = new JSONArray();
     private static JSONDataHandler jsonDataHandler;
     private static URIBuilder uriBuilder;
     private static String uri;
 
     public static void main(String[] args) {
         jsonDataHandler = new JSONDataHandler();
+
         for (int i = 1; i <= PAGE_LIMIT; i++) {
             uriBuilder = new URIBuilder(absolutePath, relativePath, query + String.valueOf(i));
             uri = uriBuilder.buildUri();
@@ -30,24 +33,45 @@ public class Main {
             JSONObject jsonObject = null;
             try {
                 jsonObject = new JSONObject(jsonDataHandler.getJSONData(uri));
-                System.out.println("JSON object: " + jsonObject);
             } catch (JSONException e) {
                 e.printStackTrace();
             }
 
-            parseJSONData(jsonObject);
+            getRelevantInfoFromJSONObject(jsonObject);
         }
     }
 
-    public static void parseJSONData(JSONObject jsonObject) {
-        JSONArray jsonArray = new JSONArray();
+    public static void getRelevantInfoFromJSONObject(JSONObject jsonObject) {
+        try {
+            JSONArray customerOrders = jsonObject.getJSONArray("orders");
+
+            for (int i = 0; i < customerOrders.length(); i++) {
+                JSONObject individualOrder = customerOrders.getJSONObject(i);
+                JSONArray productInfo = individualOrder.getJSONArray("products");
+
+                for (int j = 0; j < productInfo.length(); j++) {
+                    JSONObject individualItem = productInfo.getJSONObject(j);
+                    String nameOfItem = individualItem.getString("title");
+
+                    if (nameOfItem.equals("Cookie")) {
+                        jsonObject = removeItem(individualOrder.getInt("id"), j, productInfo);
+                        System.out.println(jsonObject);
+                    }
+                }
+
+            }
+
+
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public static JSONObject removeItem(int id, int index, JSONArray productInfo) {
+        return (JSONObject) productInfo.remove(index);
     }
 
     public static boolean sortOrders(JSONObject jsonObject) {
         return false;
-    }
-
-    public static JSONObject createJSONOutput(JSONObject jsonObject) {
-        return null;
     }
 }
