@@ -29,7 +29,6 @@ public class Main {
         for (int i = 1; i <= PAGE_LIMIT; i++) {
             uriBuilder = new URIBuilder(absolutePath, relativePath, query + String.valueOf(i));
             uri = uriBuilder.buildUri();
-            System.out.println(uri);
 
             JSONObject jsonObject = null;
             try {
@@ -47,6 +46,7 @@ public class Main {
             JSONObject relevantOrders = new JSONObject();
             JSONArray arrayOfItems = new JSONArray();
             JSONArray customerOrders = jsonObject.getJSONArray("orders");
+            int available_cookies = jsonObject.getInt("available_cookies");
 
             for (int i = 0; i < customerOrders.length(); i++) {
                 JSONObject individualOrder = customerOrders.getJSONObject(i);
@@ -64,8 +64,36 @@ public class Main {
                 }
                 relevantOrders.put("orders", arrayOfItems);
             }
+
             relevantOrders = sortOrders(relevantOrders);
-            System.out.println(relevantOrders);
+            canFulfillOrder(relevantOrders, available_cookies);
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public static void canFulfillOrder(JSONObject orders, int availableCookies) {
+        JSONObject infoOfUnfulfilledOrders = new JSONObject();
+        List<Integer> ids = new ArrayList<Integer>();
+
+        try {
+            JSONArray items = orders.getJSONArray("orders");
+
+            for (int i = 0; i < items.length(); i++) {
+                JSONObject individualItem = items.getJSONObject(i);
+                int quantityOfOrder = individualItem.getInt("amount");
+                if (availableCookies < quantityOfOrder) {
+                    ids.add(individualItem.getInt("id"));
+                } else {
+                    availableCookies -= quantityOfOrder;
+                }
+            }
+
+            infoOfUnfulfilledOrders.put("remaining_cookies", availableCookies);
+            infoOfUnfulfilledOrders.put("unfulfilled_orders", ids);
+
+            System.out.println(infoOfUnfulfilledOrders);
+
         } catch (JSONException e) {
             e.printStackTrace();
         }
