@@ -70,6 +70,14 @@ public class Main {
         }
     }
 
+    public static JSONArray getProductsFromJSONObject(JSONObject jsonObject) {
+        return null;
+    }
+
+    public static String getNameOfItem(JSONArray jsonArray) {
+        return "";
+    }
+
     public static JSONObject removeRelevantItem(int index, JSONArray productInfo) {
         return (JSONObject) productInfo.remove(index);
     }
