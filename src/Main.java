@@ -65,6 +65,7 @@ public class Main {
                 relevantOrders.put("orders", arrayOfItems);
             }
             relevantOrders = sortOrders(relevantOrders);
+            System.out.println(relevantOrders);
         } catch (JSONException e) {
             e.printStackTrace();
         }
@@ -83,6 +84,7 @@ public class Main {
     }
 
     public static JSONObject sortOrders(JSONObject jsonObject) {
+        JSONObject relevantOrders = new JSONObject();
         JSONArray sortedOrders = new JSONArray();
         List<JSONObject> listOfIndividualOrders = new ArrayList<JSONObject>();
 
@@ -101,7 +103,6 @@ public class Main {
                     try {
                         orderAmount1 = order1.getInt("amount");
                         orderAmount2 = order2.getInt("amount");
-                        System.out.println("1: " + String.valueOf(orderAmount1) + " 2: " + String.valueOf(orderAmount2));
                     } catch (JSONException e) {
                         e.printStackTrace();
                     }
@@ -113,12 +114,16 @@ public class Main {
             for (int i = 0; i < ordersArray.length(); i++) {
                 sortedOrders.put(listOfIndividualOrders.get(i));
             }
-
-            System.out.println("Sort: " + sortedOrders);
         } catch (JSONException e) {
             e.printStackTrace();
         }
 
-        return null;
+        try {
+            relevantOrders.put("orders", sortedOrders);
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+
+        return relevantOrders;
     }
 }
