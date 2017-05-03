@@ -17,8 +17,6 @@ public class Main {
     private static final String relativePath = "/orders.json";
     private static final String query = "?page=";
 
-    private static JSONObject encapsulateObject = new JSONObject();
-    private static JSONArray arrayWithRelevantInfo = new JSONArray();
     private static JSONDataHandler jsonDataHandler;
     private static URIBuilder uriBuilder;
     private static String uri;
