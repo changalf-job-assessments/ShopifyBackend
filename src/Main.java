@@ -1,10 +1,7 @@
 import org.json.JSONArray;
 import org.json.JSONException;
-import org.json.JSONML;
 import org.json.JSONObject;
 
-import java.io.InputStream;
-import java.io.InputStreamReader;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
@@ -67,9 +64,6 @@ public class Main {
                 }
                 relevantOrders.put("orders", arrayOfItems);
             }
-
-            System.out.println(relevantOrders);
-
             relevantOrders = sortOrders(relevantOrders);
         } catch (JSONException e) {
             e.printStackTrace();
@@ -89,7 +83,7 @@ public class Main {
     }
 
     public static JSONObject sortOrders(JSONObject jsonObject) {
-        JSONArray sortedJSONArray = new JSONArray();
+        JSONArray sortedOrders = new JSONArray();
         List<JSONObject> listOfIndividualOrders = new ArrayList<JSONObject>();
 
         try {
@@ -101,15 +95,26 @@ public class Main {
 
             Collections.sort(listOfIndividualOrders, new Comparator<JSONObject>() {
                 public int compare(JSONObject order1, JSONObject order2) {
+                    int orderAmount1 = 0;
+                    int orderAmount2 = 0;
+
                     try {
-                        int orderAmount1 = order1.getInt("amount");
-                        int orderAmount2 = order2.getInt("amount");
+                        orderAmount1 = order1.getInt("amount");
+                        orderAmount2 = order2.getInt("amount");
+                        System.out.println("1: " + String.valueOf(orderAmount1) + " 2: " + String.valueOf(orderAmount2));
                     } catch (JSONException e) {
                         e.printStackTrace();
                     }
-                    return 0;
+
+                    return Integer.compare(orderAmount2, orderAmount1);
                 }
             });
+
+            for (int i = 0; i < ordersArray.length(); i++) {
+                sortedOrders.put(listOfIndividualOrders.get(i));
+            }
+
+            System.out.println("Sort: " + sortedOrders);
         } catch (JSONException e) {
             e.printStackTrace();
         }
