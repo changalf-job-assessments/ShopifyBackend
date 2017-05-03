@@ -56,9 +56,9 @@ public class Main {
                     String nameOfItem = individualItem.getString("title");
 
                     if (nameOfItem.equals("Cookie")) {
-                        jsonObject = removeItem(individualOrder.getInt("id"), j, productInfo);
+                        jsonObject = removeRelevantItem(j, productInfo);
+                        jsonObject.put("id", individualOrder.getInt("id"));
                         arrayOfItems.put(jsonObject);
-                        System.out.println(arrayOfItems);
                     }
                 }
                 relevantOrders.put("orders", arrayOfItems);
@@ -70,7 +70,7 @@ public class Main {
         }
     }
 
-    public static JSONObject removeItem(int id, int index, JSONArray productInfo) {
+    public static JSONObject removeRelevantItem(int index, JSONArray productInfo) {
         return (JSONObject) productInfo.remove(index);
     }
 
