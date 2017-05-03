@@ -5,13 +5,17 @@ import org.json.JSONObject;
 
 import java.io.InputStream;
 import java.io.InputStreamReader;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
+import java.util.List;
 
 /**
  * Created by alfredchang on 2017-05-01.
  */
 public class Main {
 
-    private static final int PAGE_LIMIT = 11;
+    private static final int PAGE_LIMIT = 3;
     private static final String absolutePath = "https://backend-challenge-fall-2017.herokuapp.com";
     private static final String relativePath = "/orders.json";
     private static final String query = "?page=";
@@ -65,6 +69,8 @@ public class Main {
             }
 
             System.out.println(relevantOrders);
+
+            relevantOrders = sortOrders(relevantOrders);
         } catch (JSONException e) {
             e.printStackTrace();
         }
@@ -82,7 +88,32 @@ public class Main {
         return (JSONObject) productInfo.remove(index);
     }
 
-    public static boolean sortOrders(JSONObject jsonObject) {
-        return false;
+    public static JSONObject sortOrders(JSONObject jsonObject) {
+        JSONArray sortedJSONArray = new JSONArray();
+        List<JSONObject> listOfIndividualOrders = new ArrayList<JSONObject>();
+
+        try {
+            JSONArray ordersArray = jsonObject.getJSONArray("orders");
+
+            for (int i = 0; i < ordersArray.length(); i++) {
+                listOfIndividualOrders.add(ordersArray.getJSONObject(i));
+            }
+
+            Collections.sort(listOfIndividualOrders, new Comparator<JSONObject>() {
+                public int compare(JSONObject order1, JSONObject order2) {
+                    try {
+                        int orderAmount1 = order1.getInt("amount");
+                        int orderAmount2 = order2.getInt("amount");
+                    } catch (JSONException e) {
+                        e.printStackTrace();
+                    }
+                    return 0;
+                }
+            });
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+
+        return null;
     }
 }
